@@ -6,7 +6,7 @@ BASE_URL="https://mirrors.tuna.tsinghua.edu.cn/nix-channels"
 UPSTREAM_REPO="https://github.com/NixOS/nixpkgs.git"
 MIRROR_REPO="https://github.com/$GITHUB_REPOSITORY"
 
-builtin echo "machine github.com login $GITHUB_ACTOR password $TOKEN_WORKFLOW"> ~/.netrc
+builtin echo "machine github.com login dramforever password $TOKEN_WORKFLOW"> ~/.netrc
 
 curl -sSL "$BASE_URL/" | sed -Ee '
     s/.* title="(nix(os|pkgs)-[a-z0-9.-]+)">.*/\1/p
