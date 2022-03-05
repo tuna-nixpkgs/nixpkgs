@@ -26,7 +26,7 @@ get_current_branches() {
 git config --unset --local http.https://github.com/.extraheader
 
 join -j2 \
-    <(get_mirror_branches | sort -k1) \
+    <(get_mirror_branches | sort -k2) \
     <(get_current_branches | sort -k2) \
     | while IFS=$'\t' read -r channel mirror_rev current_rev; do
 
