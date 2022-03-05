@@ -26,7 +26,7 @@ get_current_branches() {
 # Don't mess up my token please
 git config --unset --local http.https://github.com/.extraheader
 
-join -a1 -j2 <(get_mirror_branches | sort -k2) <(get_current_branches | sort -k2) \n
+join -a 1 -j "2" <(get_mirror_branches | sort -k2) <(get_current_branches | sort -k2) \
     | while IFS=$'\t' read -r channel mirror_rev current_rev; do
 
     if [ "$mirror_rev" != "$current_rev" ]; then
