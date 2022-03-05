@@ -29,8 +29,6 @@ git config --unset --local http.https://github.com/.extraheader
 join -a 1 -j "2" <(get_mirror_branches | sort -k2) <(get_current_branches | sort -k2) \
     | while IFS=' ' read -r channel mirror_rev current_rev; do
 
-    echo "$channel: $current_rev $mirror_rev"
-
     if [ "$mirror_rev" != "$current_rev" ]; then
         echo "Updating $channel" >&2
         echo "  $current_rev -> $mirror_rev" >&2
