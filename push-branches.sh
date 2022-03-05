@@ -4,7 +4,7 @@ set -eo pipefail
 
 BASE_URL="https://mirrors.tuna.tsinghua.edu.cn/nix-channels"
 UPSTREAM_REPO="https://github.com/NixOS/nixpkgs.git"
-MIRROR_REPO="https://github.com/$GITHUB_REPOSITORY"
+MIRROR_REPO="git://github.com/$GITHUB_REPOSITORY.git"
 
 builtin echo "machine github.com login dramforever password $TOKEN_WORKFLOW"> ~/.netrc
 
@@ -23,7 +23,7 @@ get_current_branches() {
 }
 
 # Don't mess up my token please
-git config --unset --local http.https://github.com/.extraheader
+git config --unset --local 'http."https://github.com/".extraheader'
 
 join -j2 \
     <(get_mirror_branches | sort -k2) \
