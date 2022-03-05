@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
-set -eo pipefail
+set -xeo pipefail
 
 BASE_URL="https://mirrors.tuna.tsinghua.edu.cn/nix-channels"
 UPSTREAM_REPO="https://github.com/NixOS/nixpkgs.git"
-MIRROR_REPO="git://github.com/$GITHUB_REPOSITORY.git"
+GIT_MIRROR_REPO="git://github.com/$GITHUB_REPOSITORY.git"
+HTTPS_MIRROR_REPO="https://github.com/$GITHUB_REPOSITORY.git"
 
 builtin echo "machine github.com login dramforever password $TOKEN_WORKFLOW"> ~/.netrc
 
@@ -19,22 +20,18 @@ get_mirror_branches() {
 }
 
 get_current_branches() {
-    git ls-remote "$MIRROR_REPO" "refs/heads/*" | sed "s|refs/heads/||g"
+    git ls-remote "$GIT_MIRROR_REPO" "refs/heads/*" | sed "s|refs/heads/||g"
 }
 
 # Don't mess up my token please
 git config --unset --local http.https://github.com/.extraheader
 
-join -j2 \
-    <(get_mirror_branches | sort -k2) \
-    <(get_current_branches | sort -k2) \
-    | while IFS=$'\t' read -r channel mirror_rev current_rev; do
-
+join -j2 <(get_mirror_branches | sort -k2) <(get_current_branches | sort -k2) | while IFS=$'\t' read -r channel mirror_rev current_rev; do
     if [ "$mirror_rev" != "$current_rev" ]; then
         echo "Updating $channel" >&2
         echo "  $current_rev -> $mirror_rev" >&2
 
         git fetch "$UPSTREAM_REPO" "$channel"
-        git push "$MIRROR_REPO" "$mirror_rev:refs/heads/$channel"
+        git push "$HTTPS_MIRROR_REPO" "$mirror_rev:refs/heads/$channel"
     fi
 done
