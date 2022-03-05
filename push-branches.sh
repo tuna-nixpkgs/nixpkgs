@@ -22,6 +22,9 @@ get_current_branches() {
     git ls-remote "$MIRROR_REPO" "refs/heads/*" | sed "s|refs/heads/||g"
 }
 
+# Don't mess up my token please
+git config --unset --local http.https://github.com/.extraheader
+
 join -j2 \
     <(get_mirror_branches | sort -k1) \
     <(get_current_branches | sort -k2) \
