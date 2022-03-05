@@ -15,7 +15,7 @@ get_mirror_branches() {
         d
     ' | while IFS= read -r channel; do
         git_revision="$(curl -sSL "$BASE_URL/$channel/git-revision")"
-        echo "$git_revision\t$channel"
+        echo -e "$git_revision\t$channel"
     done
 }
 
