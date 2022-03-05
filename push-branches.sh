@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -xeo pipefail
+set -eo pipefail
 
 BASE_URL="https://mirrors.tuna.tsinghua.edu.cn/nix-channels"
 UPSTREAM_REPO="https://github.com/NixOS/nixpkgs.git"
@@ -26,7 +26,11 @@ get_current_branches() {
 # Don't mess up my token please
 git config --unset --local http.https://github.com/.extraheader
 
-join -a1 -j2 <(get_mirror_branches | sort -k2) <(get_current_branches | sort -k2) | while IFS=$'\t' read -r channel mirror_rev current_rev; do
+join -a1 -j2 <(get_mirror_branches | sort -k2) <(get_current_branches | sort -k2) 
+
+exit
+
+| while IFS=$'\t' read -r channel mirror_rev current_rev; do
     if [ "$mirror_rev" != "$current_rev" ]; then
         echo "Updating $channel" >&2
         echo "  $current_rev -> $mirror_rev" >&2
