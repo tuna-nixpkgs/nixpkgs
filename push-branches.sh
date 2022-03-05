@@ -20,13 +20,13 @@ get_mirror_branches() {
 }
 
 get_current_branches() {
-    git ls-remote "$GIT_MIRROR_REPO" "refs/heads/*" | sed "s|refs/heads/||g"
+    git ls-remote "$GIT_MIRROR_REPO" "refs/heads/*" | sed -e "s|refs/heads/||g"
 }
 
 # Don't mess up my token please
 git config --unset --local http.https://github.com/.extraheader
 
-join -j2 <(get_mirror_branches | sort -k2) <(get_current_branches | sort -k2) | while IFS=$'\t' read -r channel mirror_rev current_rev; do
+join -a1 -j2 <(get_mirror_branches | sort -k2) <(get_current_branches | sort -k2) | while IFS=$'\t' read -r channel mirror_rev current_rev; do
     if [ "$mirror_rev" != "$current_rev" ]; then
         echo "Updating $channel" >&2
         echo "  $current_rev -> $mirror_rev" >&2
