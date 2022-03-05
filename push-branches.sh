@@ -23,7 +23,7 @@ get_current_branches() {
 }
 
 # Don't mess up my token please
-git config --unset --local 'http."https://github.com/".extraheader'
+git config --unset --local http.https://github.com/.extraheader
 
 join -j2 \
     <(get_mirror_branches | sort -k2) \
