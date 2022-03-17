@@ -4,7 +4,7 @@ set -eo pipefail
 
 BASE_URL="https://mirrors.tuna.tsinghua.edu.cn/nix-channels"
 UPSTREAM_REPO="https://github.com/NixOS/nixpkgs.git"
-GIT_MIRROR_REPO="git://github.com/$GITHUB_REPOSITORY.git"
+GIT_MIRROR_REPO="https://github.com/$GITHUB_REPOSITORY.git"
 HTTPS_MIRROR_REPO="https://github.com/$GITHUB_REPOSITORY.git"
 
 builtin echo "machine github.com login dramforever password $TOKEN_WORKFLOW"> ~/.netrc
