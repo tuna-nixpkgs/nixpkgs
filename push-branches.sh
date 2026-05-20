@@ -32,7 +32,7 @@ join -a 1 -j "2" <(get_mirror_branches | sort -k2) <(get_current_branches | sort
         echo "Updating $channel" >&2
         echo "  $current_rev -> $mirror_rev" >&2
 
-        git -C tmp.git fetch "$UPSTREAM_REPO" "$mirror_rev"
+        git -C tmp.git fetch origin "$mirror_rev"
         git -C tmp.git push "$HTTPS_MIRROR_REPO" "$mirror_rev:refs/heads/$channel"
     fi
 done
