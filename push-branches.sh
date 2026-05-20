@@ -23,8 +23,10 @@ get_current_branches() {
     git ls-remote "$GIT_MIRROR_REPO" "refs/heads/*" | sed -e "s|refs/heads/||g"
 }
 
+git clone --bare --filter=tree:0 "$UPSTREAM_REPO" tmp.git
+
 # Don't mess up my token please
-git config --unset --local http.https://github.com/.extraheader
+git -C tmp.git config --unset --local http.https://github.com/.extraheader
 
 join -a 1 -j "2" <(get_mirror_branches | sort -k2) <(get_current_branches | sort -k2) \
     | while IFS=' ' read -r channel mirror_rev current_rev; do
@@ -33,7 +35,7 @@ join -a 1 -j "2" <(get_mirror_branches | sort -k2) <(get_current_branches | sort
         echo "Updating $channel" >&2
         echo "  $current_rev -> $mirror_rev" >&2
 
-        git fetch "$UPSTREAM_REPO" "$channel"
-        git push "$HTTPS_MIRROR_REPO" "$mirror_rev:refs/heads/$channel"
+        git -C tmp.git fetch "$UPSTREAM_REPO" "$mirror_rev"
+        git -C tmp.git push "$HTTPS_MIRROR_REPO" "$mirror_rev:refs/heads/$channel"
     fi
 done
