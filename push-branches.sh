@@ -23,7 +23,7 @@ get_current_branches() {
     git ls-remote "$GIT_MIRROR_REPO" "refs/heads/*" | sed -e "s|refs/heads/||g"
 }
 
-git clone --bare --filter=tree:0 "$UPSTREAM_REPO" tmp.git
+git clone --bare --depth=1 --filter=tree:0 "$UPSTREAM_REPO" tmp.git
 
 # Don't mess up my token please
 git -C tmp.git config --unset --local http.https://github.com/.extraheader
